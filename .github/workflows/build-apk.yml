@@ -17,7 +17,7 @@ jobs:
 
       - uses: android-actions/setup-android@v3
         with:
-          packages: "platforms;android-36 build-tools;36.0.0 platform-tools"
+          packages: "platforms;android-36 build-tools;36.0.0 platform-tools cmake;3.22.1"
 
       - uses: gradle/actions/setup-gradle@v4
 
@@ -25,6 +25,8 @@ jobs:
       # so only the Gradle step is needed.
       - name: Build debug APK
         run: |
+          # Remove the original author's Mac-only Java path
+          sed -i '/^org.gradle.java.home/d' gradle.properties
           chmod +x gradlew
           ./gradlew :doom:assembleDebug --stacktrace
 
